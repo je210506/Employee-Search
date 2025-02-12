@@ -62,18 +62,27 @@ const loadSavedCandidates = () => {
 const saveCandidate = () => {
   if (candidate) {
     try {
-      const storedCandidates
+      const storedCandidates: Candidate[] = JSON.parse(localStorage.getItem("savedCandidates") || "[]");
+      if (!storedCandidates.some((c) => c.login === candidate.login)) {
+        const updatedCandidates = [...storedCandidates, candidate];
+        localStorage.getItem("savedCandidates", JSON.stringify(updatedCandidates));
+
+        setSavedCandidates(updatedCandidates); //update
+        console.log("Candidate Saved successfully:", candidate);
+        loadCandidate(); //load the next candidate
+      } else {
+        console.warn("Candidate already saved:")
+      }
+    } catch (error) {
+      console.error("There was an error saving this candidate:", error);
     }
   }
-}
+};
 
+//what the webpage actually looks like using it
+return ();
 
-
-
-
-}
-
-
+};
 
 
   
