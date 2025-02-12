@@ -50,7 +50,28 @@ const loadCandidate = async () => {
     setLoading(false);
   }
 };
+//load a saved candidate from local storage
+const loadSavedCandidates = () => {
+  const storedCandidates = localStorage.getItem("savedCandidates");
+  if (storedCandidates) {
+    setSavedCandidates(JSON.parse(storedCandidates));
+  }
+};
 
+//saving candidate to my local storage
+const saveCandidate = () => {
+  if (candidate) {
+    try {
+      const storedCandidates
+    }
+  }
+}
+
+
+
+
+
+}
 
 
 
