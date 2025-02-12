@@ -13,7 +13,7 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* 🔹 Background & Page Layout */
+/* Background & Page Layout */
 body {
   background: linear-gradient(180deg, rgb(32, 44, 136) 0%, rgba(9, 9, 121, 1) 15%, rgba(0, 2, 18, 1) 100%);
   background-size: cover;
@@ -28,7 +28,6 @@ body {
   min-height: 100vh;
 }
 
-/* 🔹 Page Heading */
 h1 {
   font-size: 3rem;
   font-weight: 700;
@@ -38,7 +37,6 @@ h1 {
   text-shadow: 2px 2px 10px rgba(255, 255, 255, 0.3);
 }
 
-/* 🔹 Navigation Bar */
 .nav {
   display: flex;
   justify-content: flex-start;
@@ -78,7 +76,6 @@ h1 {
   text-decoration: underline;
 }
 
-/* 🔹 Candidate Table */
 .candidate-table {
   width: 90%;
   border-collapse: collapse;
@@ -109,7 +106,6 @@ h1 {
   background-color: #444;
 }
 
-/* 🔹 Candidate Image */
 .candidate-avatar {
   width: 50px;
   height: 50px;
@@ -121,7 +117,6 @@ h1 {
   border-bottom-right-radius: 10px;
 }
 
-/* 🔹 Email Link */
 .email-link {
   color: #00aaff;
   text-decoration: none;
@@ -131,7 +126,6 @@ h1 {
   text-decoration: underline;
 }
 
-/* 🔹 Button Container */
 .button-container {
   display: flex;
   justify-content: center;
@@ -139,7 +133,6 @@ h1 {
   margin-top: 15px;
 }
 
-/* 🔴 Reject Button */
 .reject-btn {
   background-color: red;
   color: white;
@@ -162,7 +155,6 @@ h1 {
   box-shadow: 0px 6px 10px rgba(255, 0, 0, 0.6);
 }
 
-/* 🟢 Accept Button */
 .accept-btn {
   background-color: #2ecc71;
   color: white;

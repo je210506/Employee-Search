@@ -1,5 +1,9 @@
-import { Outlet } from 'react-router-dom';
-import Nav from './components/Nav';
+import { Routes, Route } from "react-router-dom";
+import Nav from "./components/Nav";
+import CandidateSearch from "./pages/CandidateSearch";
+import PotentialCandidates from "./pages/PotentialCandidates"; 
+import NotFound from "./pages/NotFound.tsx";
+
 
 function App() {
   return (
