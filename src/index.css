@@ -98,11 +98,13 @@ tbody tr:nth-child(odd) {
   display: flex;
   justify-content: flex-start;
   padding: 1em 2em;
+  margin-left: 20px;
 }
 
-.nav-item {
+.nav a {
   padding: 0 0.5rem;
   list-style: none;
+  align-items: center;
 }
 
 .nav-link {
