@@ -6,7 +6,11 @@ function App() {
     <>
       <Nav />
       <main>
-        <Outlet />
+      <Routes>
+          <Route path="/" element={<CandidateSearch />} />
+          <Route path="/potential" element={<PotentialCandidates />} /> {}
+          <Route path="*" element={<NotFound />} />
+        </Routes>
       </main>
     </>
   );

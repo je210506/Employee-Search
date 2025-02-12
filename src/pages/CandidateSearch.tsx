@@ -65,7 +65,7 @@ const saveCandidate = () => {
       const storedCandidates: Candidate[] = JSON.parse(localStorage.getItem("savedCandidates") || "[]");
       if (!storedCandidates.some((c) => c.login === candidate.login)) {
         const updatedCandidates = [...storedCandidates, candidate];
-        localStorage.getItem("savedCandidates", JSON.stringify(updatedCandidates));
+        localStorage.setItem("savedCandidates", JSON.stringify(updatedCandidates));
 
         setSavedCandidates(updatedCandidates); //update
         console.log("Candidate Saved successfully:", candidate);
@@ -80,7 +80,48 @@ const saveCandidate = () => {
 };
 
 //what the webpage actually looks like using it
-return ();
+return (
+  <main>
+      <h1>Candidate Search</h1>
+
+      {loading ? (
+        <p>Loading...</p>
+      ) : error ? (
+        <p style={{ color: "red", fontWeight: "bold" }}>{error}</p>
+      ) : candidate ? (
+        <div className="card">
+          <img
+            src={candidate.avatar_url}
+            alt={candidate.name || "Candidate"}
+            className="candidate-avatar"
+          />
+          <h2>{candidate.name || "No Name Available"} <em>({candidate.login})</em></h2>
+          <p><strong>Location:</strong> {candidate.location || "Not available"}</p>
+          <p><strong>Company:</strong> {candidate.company || "Not available"}</p>
+          <p><strong>Email:</strong>
+            {candidate.email ? (
+              <a href={`mailto:${candidate.email}`} style={{ color: "#00aaff" }}>
+                {candidate.email}
+              </a>
+            ) : "Not available"}
+          </p>
+          <p>
+            <strong>Profile:</strong>
+            <a href={candidate.html_url} target="_blank" rel="noopener noreferrer" style={{ color: "#00aaff" }}>
+              GitHub Profile
+            </a>
+          </p>
+
+          <div className="button-container">
+            <button className="reject-btn" onClick={loadCandidate}>−</button>
+            <button className="accept-btn" onClick={saveCandidate}>+</button>
+          </div>
+        </div>
+      ) : (
+        <p>No candidates available.</p>
+      )}
+    </main>
+);
 
 };
 
