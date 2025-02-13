@@ -1,43 +1,115 @@
-const searchGithub = async () => {
+const GITHUB_API_URL = "https://api.github.com/users";
+
+interface Candidate {
+  login: string;
+  name: string;
+  avatar_url: string;
+  email: string;
+  company: string;
+  location: string;
+  html_url: string;
+}
+
+/**
+ * Fetch a list of GitHub users starting from a random user ID.
+ * @returns {Promise<any[]>} An array of GitHub user objects or an empty array on failure.
+ */
+const searchGithub = async (): Promise<Candidate[]> => {
   try {
-    const start = Math.floor(Math.random() * 100000000) + 1;
-    // console.log(import.meta.env);
-    const response = await fetch(
-      `https://api.github.com/users?since=${start}`,
-      {
-        headers: {
-          Authorization: `Bearer ${import.meta.env.VITE_GITHUB_TOKEN}`,
-        },
-      }
-    );
-    // console.log('Response:', response);
-    const data = await response.json();
-    if (!response.ok) {
-      throw new Error('invalid API response, check the network tab');
+    const token = import.meta.env.VITE_GITHUB_TOKEN;
+
+    if (!token) {
+      throw new Error("The GitHub API Token is missing! Check your .env file.");
     }
-    // console.log('Data:', data);
-    return data;
+
+    const start = Math.floor(Math.random() * 100000000) + 1;
+    console.log(`🔍 Fetching GitHub users since ID: ${start}...`);
+
+    const response = await fetch(`${GITHUB_API_URL}?since=${start}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        Accept: "application/vnd.github.v3+json",
+      },
+    });
+
+    if (!response.ok) {
+      console.error(`GitHub API Error ${response.status}: ${response.statusText}`);
+
+      if (response.status === 403) {
+        console.warn("The API Rate Limit Exceeded. Please try again later.");
+      }
+      if (response.status === 401) {
+        console.warn("401 Unauthorized: Check if your GitHub token is valid.");
+      }
+
+      throw new Error(`Invalid API response: ${response.statusText}`);
+    }
+
+    const data = await response.json();
+    console.log("Successfully fetched GitHub users :):", data);
+
+    return Array.isArray(data) ? data : [];
   } catch (err) {
-    // console.log('an error occurred', err);
+    console.error("Error fetching GitHub users:", err);
     return [];
   }
 };
 
-const searchGithubUser = async (username: string) => {
+/**
+ * Fetch detailed information about a specific GitHub user.
+ * @param {string} username - The GitHub username.
+ * @returns {Promise<Candidate | null>} A Candidate object or null if an error occurs.
+ */
+const searchGithubUser = async (username: string): Promise<Candidate | null> => {
   try {
-    const response = await fetch(`https://api.github.com/users/${username}`, {
+    const token = import.meta.env.VITE_GITHUB_TOKEN;
+
+    if (!token) {
+      throw new Error("GitHub API Token is missing! Check your .env file.");
+    }
+
+    console.log(`🔍 Fetching details for user: ${username}...`);
+
+    const response = await fetch(`${GITHUB_API_URL}/${username}`, {
       headers: {
-        Authorization: `Bearer ${import.meta.env.VITE_GITHUB_TOKEN}`,
+        Authorization: `Bearer ${token}`,
+        Accept: "application/vnd.github.v3+json",
       },
     });
-    const data = await response.json();
+
     if (!response.ok) {
-      throw new Error('invalid API response, check the network tab');
+      if (response.status === 404) {
+        console.warn(`⚠️ User ${username} not found (404). Skipping...`);
+        return null; // ✅ Skip this user and try another one
+      }
+
+      console.error(`⚠️ GitHub API Error ${response.status}: ${response.statusText}`);
+
+      if (response.status === 403) {
+        console.warn("API Rate Limit Exceeded. Try again later.");
+      }
+      if (response.status === 401) {
+        console.warn("401 Unauthorized: Check if your GitHub token is valid.");
+      }
+
+      throw new Error(`Invalid API response for ${username}: ${response.statusText}`);
     }
-    return data;
+
+    const data = await response.json();
+    console.log("Successfully fetched user details:", data);
+
+    return {
+      login: data.login,
+      name: data.name || "No Name Available",
+      avatar_url: data.avatar_url || "",
+      email: data.email || "Email not provided",
+      company: data.company || "Company not listed",
+      location: data.location || "Location unknown",
+      html_url: data.html_url,
+    };
   } catch (err) {
-    // console.log('an error occurred', err);
-    return {};
+    console.error(`Error fetching details for user ${username}:`, err);
+    return null;
   }
 };
 
